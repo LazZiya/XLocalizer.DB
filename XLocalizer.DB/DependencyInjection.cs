@@ -59,7 +59,7 @@ namespace XLocalizer.DB
         /// <returns></returns>
         public static IMvcBuilder AddXDbLocalizer<TContext, TTranslator>(this IMvcBuilder builder)
             where TContext : DbContext
-            where TTranslator : IStringTranslator
+            where TTranslator : ITranslator
         {
             var ops = new XLocalizerOptions();
 
@@ -78,7 +78,7 @@ namespace XLocalizer.DB
         /// <returns></returns>
         public static IMvcBuilder AddXDbLocalizer<TContext, TTranslator>(this IMvcBuilder builder, Action<XLocalizerOptions> options)
             where TContext : DbContext
-            where TTranslator : IStringTranslator
+            where TTranslator : ITranslator
         {
             return builder
                 .AddXDbLocalizer<TContext, TTranslator, XDbResource>(options);
@@ -95,7 +95,7 @@ namespace XLocalizer.DB
         /// <returns></returns>
         public static IMvcBuilder AddXDbLocalizer<TContext, TTranslator, TResource>(this IMvcBuilder builder)
             where TContext : DbContext
-            where TTranslator : IStringTranslator
+            where TTranslator : ITranslator
             where TResource : class, IXDbResource, new()
         {
             var ops = new XLocalizerOptions();
@@ -116,7 +116,7 @@ namespace XLocalizer.DB
         /// <returns></returns>
         public static IMvcBuilder AddXDbLocalizer<TContext, TTranslator, TResource>(this IMvcBuilder builder, Action<XLocalizerOptions> options)
             where TContext : DbContext
-            where TTranslator : IStringTranslator
+            where TTranslator : ITranslator
             where TResource : class, IXDbResource, new()
         {
             builder.Services.Configure<XLocalizerOptions>(options);

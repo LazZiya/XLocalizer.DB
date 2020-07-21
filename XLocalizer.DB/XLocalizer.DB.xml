@@ -109,7 +109,7 @@
             </summary>
             <typeparam name="TResource"></typeparam>
         </member>
-        <member name="M:XLocalizer.DB.DbStringLocalizer`1.#ctor(XLocalizer.DB.IDbResourceProvider,XLocalizer.Translate.IStringTranslatorFactory,XLocalizer.Common.ExpressMemoryCache,Microsoft.Extensions.Options.IOptions{XLocalizer.XLocalizerOptions},Microsoft.Extensions.Options.IOptions{Microsoft.AspNetCore.Builder.RequestLocalizationOptions},Microsoft.Extensions.Logging.ILoggerFactory)">
+        <member name="M:XLocalizer.DB.DbStringLocalizer`1.#ctor(XLocalizer.DB.IDbResourceProvider,XLocalizer.Translate.ITranslatorFactory,XLocalizer.Common.ExpressMemoryCache,Microsoft.Extensions.Options.IOptions{XLocalizer.XLocalizerOptions},Microsoft.Extensions.Options.IOptions{Microsoft.AspNetCore.Builder.RequestLocalizationOptions},Microsoft.Extensions.Logging.ILoggerFactory)">
             <summary>
             Initialize a new instance of DbStringLocalizer
             </summary>
@@ -154,7 +154,7 @@
             DbStringLocalizer factory
             </summary>
         </member>
-        <member name="M:XLocalizer.DB.DbStringLocalizerFactory`1.#ctor(XLocalizer.DB.IDbResourceProvider,XLocalizer.Translate.IStringTranslatorFactory,XLocalizer.Common.ExpressMemoryCache,Microsoft.Extensions.Options.IOptions{XLocalizer.XLocalizerOptions},Microsoft.Extensions.Options.IOptions{Microsoft.AspNetCore.Builder.RequestLocalizationOptions},Microsoft.Extensions.Logging.ILoggerFactory)">
+        <member name="M:XLocalizer.DB.DbStringLocalizerFactory`1.#ctor(XLocalizer.DB.IDbResourceProvider,XLocalizer.Translate.ITranslatorFactory,XLocalizer.Common.ExpressMemoryCache,Microsoft.Extensions.Options.IOptions{XLocalizer.XLocalizerOptions},Microsoft.Extensions.Options.IOptions{Microsoft.AspNetCore.Builder.RequestLocalizationOptions},Microsoft.Extensions.Logging.ILoggerFactory)">
             <summary>
             Initialize a new instance of DbStringLocalizerFactory
             </summary>

@@ -19,7 +19,7 @@ namespace XLocalizer.DB
         where TResource : class, IXDbResource, new()
     {
         private readonly IDbResourceProvider _provider;
-        private readonly IStringTranslator _translator;
+        private readonly ITranslator _translator;
         private readonly ExpressMemoryCache _cache;
         private readonly XLocalizerOptions _options;
         private string _defaultCulture;
@@ -35,7 +35,7 @@ namespace XLocalizer.DB
         /// <param name="loggerFactory"></param>
         /// <param name="localizationOptions"></param>
         public DbStringLocalizer(IDbResourceProvider provider,
-                                 IStringTranslatorFactory translatorFactory,
+                                 ITranslatorFactory translatorFactory,
                                  ExpressMemoryCache cache,
                                  IOptions<XLocalizerOptions> options,
                                  IOptions<RequestLocalizationOptions> localizationOptions,
