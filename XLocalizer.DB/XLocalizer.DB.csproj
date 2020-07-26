@@ -11,7 +11,7 @@
 			Database provider for XLocalizer.
 		</Description>
 		<Copyright>Ziyad.info</Copyright>
-		<PackageProjectUrl>https://github.com/LazZiya/XLocalizer.DB</PackageProjectUrl>
+		<PackageProjectUrl>http://docs.ziyad.info/XLocalizer</PackageProjectUrl>
 		<PackageTags>asp.net, core, razor, mvc, localization, globalization, client side, validation,scripts</PackageTags>
 		<PackageReleaseNotes>
 			- .net5 support
