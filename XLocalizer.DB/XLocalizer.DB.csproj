@@ -20,7 +20,7 @@
 			- Translation services updated to beta2
 			Release notes: https://github.com/LazZiya/XLocalizer.DB/releases
 		</PackageReleaseNotes>
-		<Version>1.0.0-prv5</Version>
+		<Version>1.0.0-preview1</Version>
 		<AssemblyVersion>1.0.0.0</AssemblyVersion>
 		<FileVersion>1.0.0.0</FileVersion>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -41,8 +41,8 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(UseReference)' == 'Nugets'">
-		<PackageReference Include="XLocalizer" Version="1.0.0-prv5" Exclude="Build,Analyzers" />
-		<PackageReference Include="XLocalizer.Translate" Version="1.0.0-prv4" Exclude="Build,Analyzers" />
+		<PackageReference Include="XLocalizer" Version="1.0.0-preview1" Exclude="Build,Analyzers" />
+		<PackageReference Include="XLocalizer.Translate" Version="1.0.0-preview1" Exclude="Build,Analyzers" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.0" Exclude="Build,Analyzers" />
 	</ItemGroup>
 

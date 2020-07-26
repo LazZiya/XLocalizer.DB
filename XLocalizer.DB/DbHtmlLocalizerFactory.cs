@@ -1,5 +1,4 @@
-﻿using XLocalizer.Common;
-using XLocalizer.DB.Models;
+﻿using XLocalizer.DB.Models;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.Localization;
 using System;
@@ -9,7 +8,7 @@ namespace XLocalizer.DB
     /// <summary>
     /// Database html localizer factory
     /// </summary>
-    public class DbHtmlLocalizerFactory<TResource> : IExpressHtmlLocalizerFactory
+    public class DbHtmlLocalizerFactory<TResource> : IXHtmlLocalizerFactory
         where TResource : class, IXDbResource
     {
         private readonly IStringLocalizerFactory _factory;

@@ -13,7 +13,7 @@ namespace XLocalizer.DB
     /// <summary>
     /// DbStringLocalizer factory
     /// </summary>
-    public class DbStringLocalizerFactory<TResource> : IExpressStringLocalizerFactory
+    public class DbStringLocalizerFactory<TResource> : IXStringLocalizerFactory
         where TResource : class, IXDbResource, new()
     {
         private readonly IDbResourceProvider _provider;

@@ -149,8 +149,8 @@ namespace XLocalizer.DB
 
             // Express localizer factories for creating localizers with the default shared resource type
             // Use .Create() method for creating localizers.
-            builder.Services.AddSingleton<IExpressStringLocalizerFactory, DbStringLocalizerFactory<TResource>>();
-            builder.Services.AddSingleton<IExpressHtmlLocalizerFactory, DbHtmlLocalizerFactory<TResource>>();
+            builder.Services.AddSingleton<IXStringLocalizerFactory, DbStringLocalizerFactory<TResource>>();
+            builder.Services.AddSingleton<IXHtmlLocalizerFactory, DbHtmlLocalizerFactory<TResource>>();
             
 
             // Configure route culture provide
