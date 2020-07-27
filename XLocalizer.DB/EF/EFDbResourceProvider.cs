@@ -67,12 +67,10 @@ namespace XLocalizer.DB.EF
             bool success = false;
 
             if (existed != null)
-                _logger.LogInformation($"Resource already exists! Culture: '{resource.CultureID}' - Key: '{resource.Key}'");
+                _logger.LogWarning($"Resource already exists! Culture: '{resource.CultureID}' - Key: '{resource.Key}'");
 
-            if (existed == null)
+            else
             {
-                // var entity = DynamicObjectCreator.DbResource<TResource>(key, value);
-
                 _context.Set<TResource>().Add(resource);
 
                 try

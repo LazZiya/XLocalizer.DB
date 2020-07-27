@@ -93,18 +93,23 @@ namespace XLocalizer.DB
 
             if (!availableInCache)
             {
+                var culture = CultureInfo.CurrentCulture.Name;
+
                 // Option 2: Look in DB
                 //bool availableInDb = TryGetValueFromDb(name, out value);
                 bool availableInDb = _provider.TryGetValue<TResource>(name, out value);
 
                 if (!availableInDb && _options.AutoTranslate)
                 {
-                    // Option 3: Online translate
-                    availableInTranslate = _translator.TryTranslate(_defaultCulture, CultureInfo.CurrentCulture.Name, name, out value);
-                    _logger.LogInformation($"Auto translation result: {availableInTranslate}");
+
+                    if (_defaultCulture != culture)
+                    {
+                        // Option 3: Online translate
+                        availableInTranslate = _translator.TryTranslate(_defaultCulture, CultureInfo.CurrentCulture.Name, name, out value);
+                    }
                 }
 
-                if (!availableInDb && _options.AutoAddKeys)
+                if (!availableInDb && _options.AutoAddKeys && _defaultCulture != culture)
                 {
                     var res = new TResource
                     {
