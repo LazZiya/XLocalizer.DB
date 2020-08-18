@@ -1,4 +1,4 @@
 # XLocalizer.DB
 Adds DB support to [XLocalizer](https://github.com/LazZiya/XLocalizer)
 
-For all documentations visit: [DOCS.Ziyad.info](http://docs.ziyad.info/XLocalizer/setup-db.md)
+For all documentations visit: [DOCS.Ziyad.info](http://docs.ziyad.info)
