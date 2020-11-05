@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Microsoft.Extensions.Localization;
@@ -11,7 +10,9 @@ using XLocalizer.DataAnnotations;
 using XLocalizer.Common;
 using XLocalizer.Identity;
 using XLocalizer.Translate;
-using XLocalizer.ModelBinding;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using XLocalizer.MetadataProviders;
 
 namespace XLocalizer.DB
 {
@@ -151,26 +152,9 @@ namespace XLocalizer.DB
             // Use .Create() method for creating localizers.
             builder.Services.AddSingleton<IXStringLocalizerFactory, DbStringLocalizerFactory<TResource>>();
             builder.Services.AddSingleton<IXHtmlLocalizerFactory, DbHtmlLocalizerFactory<TResource>>();
-            
 
-            // Configure route culture provide
-            return builder.AddDbDataManagers<TContext>()
-                          .AddDbDataAnnotationsLocalization<TResource>()
-                          .AddModelBindingLocalization()
-                          .AddIdentityErrorsLocalization()
-                          .WithTranslationService<TTranslator>();
-        }
-
-        /// <summary>
-        /// Add DataAnnotations localization with specified resource type.
-        /// </summary>
-        /// <param name="builder"></param>
-        /// <returns></returns>
-        public static IMvcBuilder AddDbDataAnnotationsLocalization<TResource>(this IMvcBuilder builder)
-            where TResource : class, IXDbResource
-        {
-            // Add ExpressValdiationAttributes to provide error messages by default without using ErrorMessage="..."
-            builder.Services.AddTransient<IValidationAttributeAdapterProvider, ExpressValidationAttributeAdapterProvider>();
+            // Add custom providers for overriding default modelbinding and data annotations errors
+            builder.Services.AddSingleton<IConfigureOptions<MvcOptions>, ConfigureMvcOptions>();
 
             // Add data annotations locailzation
             builder.AddDataAnnotationsLocalization(ops =>
@@ -179,7 +163,10 @@ namespace XLocalizer.DB
                 ops.DataAnnotationLocalizerProvider = (type, factory) => factory.Create(typeof(TResource));
             });
 
-            return builder;
+            // Configure route culture provide
+            return builder.AddDbDataManagers<TContext>()
+                          .AddIdentityErrorsLocalization()
+                          .WithTranslationService<TTranslator>();
         }
     }
 }

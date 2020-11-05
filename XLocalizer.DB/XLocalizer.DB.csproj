@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>netcoreapp2.0;netcoreapp2.1;netcoreapp2.2;netcoreapp3.0;netcoreapp3.1;net5</TargetFrameworks>
+		<TargetFrameworks>netcoreapp2.0;netcoreapp2.1;netcoreapp2.2;netcoreapp3.0;netcoreapp3.1;net5.0</TargetFrameworks>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<ApplicationIcon>files\icon.ico</ApplicationIcon>
 		<PackageIcon>icon.png</PackageIcon>
@@ -14,10 +14,11 @@
 		<PackageProjectUrl>http://docs.ziyad.info/XLocalizer</PackageProjectUrl>
 		<PackageTags>asp.net, core, razor, mvc, localization, globalization, client side, validation,scripts</PackageTags>
 		<PackageReleaseNotes>
-			- Fix for translation issues with default culture
+			- Target frameworks updated
 			Release notes: https://github.com/LazZiya/XLocalizer.DB/releases
 		</PackageReleaseNotes>
-		<Version>1.0.0-preview2</Version>
+		<VersionPrefix>1.0.0</VersionPrefix>
+		<VersionSuffix>rc.1</VersionSuffix>
 		<AssemblyVersion>1.0.0.0</AssemblyVersion>
 		<FileVersion>1.0.0.0</FileVersion>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -35,13 +36,13 @@
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(UseReference)' == 'Projects'">
-		<PackageReference Include="XLocalizer.Translate" Version="1.0.0-preview1" Exclude="Build,Analyzers" />
+		<PackageReference Include="XLocalizer.Translate" Version="1.0.0-rc.1" Exclude="Build,Analyzers" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.0" Exclude="Build,Analyzers" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(UseReference)' == 'Nugets'">
-		<PackageReference Include="XLocalizer" Version="1.0.0-preview2" Exclude="Build,Analyzers" />
-		<PackageReference Include="XLocalizer.Translate" Version="1.0.0-preview1" Exclude="Build,Analyzers" />
+		<PackageReference Include="XLocalizer" Version="1.0.0-rc.1" Exclude="Build,Analyzers" />
+		<PackageReference Include="XLocalizer.Translate" Version="1.0.0-rc.1" Exclude="Build,Analyzers" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.0" Exclude="Build,Analyzers" />
 	</ItemGroup>
 
@@ -55,8 +56,8 @@
 		<None Include="files\license.txt" Pack="true" PackagePath="" />
 	</ItemGroup>
 
-	<Target Name="CopyPackage" AfterTargets="Pack">
-		<Copy SourceFiles="$(OutputPath)\$(PackageId).$(PackageVersion).nupkg" DestinationFolder="$(MyNugetsOutput)\$(PackageId).$(PackageVersion).nupkg" />
+	<Target Name="AfterPack" AfterTargets="Pack">
+		<Exec Command="dotnet nuget push $(PackageOutputPath)*.nupkg --source Local" />
 	</Target>
 	
 </Project>
