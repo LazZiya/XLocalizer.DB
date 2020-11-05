@@ -246,13 +246,6 @@
             <param name="builder"></param>
             <returns></returns>
         </member>
-        <member name="M:XLocalizer.DB.DependencyInjection.AddDbDataAnnotationsLocalization``1(Microsoft.Extensions.DependencyInjection.IMvcBuilder)">
-            <summary>
-            Add DataAnnotations localization with specified resource type.
-            </summary>
-            <param name="builder"></param>
-            <returns></returns>
-        </member>
         <member name="T:XLocalizer.DB.EF.DependencyInjection">
             <summary>
             DI works...
