@@ -91,7 +91,7 @@ namespace XLocalizer.DB
                 return new LocalizedString(name, name, resourceNotFound: true, searchedLocation: string.Empty);
 
             // Option 1: Look in the cache
-            bool availableInCache = _cache.TryGetValue(name, out string value);
+            bool availableInCache = _cache.TryGetValue<TResource>(name, out string value);
             if (availableInCache)
             {
                 return new LocalizedString(name, string.Format(value, arguments), false, string.Empty);
@@ -102,7 +102,7 @@ namespace XLocalizer.DB
             if (availableInSource)
             {
                 // Add to cache
-                _cache.Set(name, value);
+                _cache.Set<TResource>(name, value);
 
                 return new LocalizedString(name, string.Format(value, arguments), false, string.Empty);
             }
@@ -115,11 +115,11 @@ namespace XLocalizer.DB
                 if (availableInTranslate)
                 {
                     // Add to cache
-                    _cache.Set(name, value);
+                    _cache.Set<TResource>(name, value);
                 }
             }
 
-            // Save to db source file when AutoAdd is anebled and
+            // Save to db source when AutoAdd is anebled and
             // translation success or AutoTranslate is off
             if (_options.AutoAddKeys && (availableInTranslate || !_options.AutoTranslate))
             {
