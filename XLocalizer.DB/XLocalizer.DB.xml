@@ -185,7 +185,7 @@
             XLocalizer DB extensions
             </summary>
         </member>
-        <member name="M:XLocalizer.DB.DependencyInjection.AddXDbLocalizerDb``1(Microsoft.Extensions.DependencyInjection.IMvcBuilder)">
+        <member name="M:XLocalizer.DB.DependencyInjection.AddXDbLocalizer``1(Microsoft.Extensions.DependencyInjection.IMvcBuilder)">
             <summary>
             Add XLocalizer with database support using the built-in entity models
             </summary>

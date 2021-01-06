@@ -22,7 +22,7 @@ namespace XLocalizer.DB
         private readonly ITranslator _translator;
         private readonly ExpressMemoryCache _cache;
         private readonly XLocalizerOptions _options;
-        private string _defaultCulture;
+        private string _transCulture;
         private readonly ILogger _logger;
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace XLocalizer.DB
             _translator = translatorFactory.Create();
             _cache = cache;
             _logger = loggerFactory.CreateLogger<DbStringLocalizer<TResource>>();
-            _defaultCulture = localizationOptions.Value.DefaultRequestCulture.Culture.Name;
+            _transCulture = options.Value.TranslateFromCulture ?? localizationOptions.Value.DefaultRequestCulture.Culture.Name;
         }
 
         /// <summary>
@@ -86,60 +86,57 @@ namespace XLocalizer.DB
 
         private LocalizedString GetLocalizedString(string name, params object[] arguments)
         {
-            var availableInTranslate = false;
+            // Option 0: If current culture is same as translation culture just return the key back
+            if (_transCulture.Equals(CultureInfo.CurrentCulture.Name, StringComparison.OrdinalIgnoreCase))
+                return new LocalizedString(name, name, resourceNotFound: true, searchedLocation: string.Empty);
 
             // Option 1: Look in the cache
-            bool availableInCache = _cache.TryGetValue(name, out string value);
-
-            if (!availableInCache)
+            bool availableInCache = _cache.TryGetValue<TResource>(name, out string value);
+            if (availableInCache)
             {
-                var culture = CultureInfo.CurrentCulture.Name;
+                return new LocalizedString(name, string.Format(value, arguments), false, string.Empty);
+            }
 
-                // Option 2: Look in DB
-                //bool availableInDb = TryGetValueFromDb(name, out value);
-                bool availableInDb = _provider.TryGetValue<TResource>(name, out value);
+            // Option 2: Look in db source
+            bool availableInSource = _provider.TryGetValue<TResource>(name, out value);
+            if (availableInSource)
+            {
+                // Add to cache
+                _cache.Set<TResource>(name, value);
 
-                if (!availableInDb && _options.AutoTranslate)
+                return new LocalizedString(name, string.Format(value, arguments), false, string.Empty);
+            }
+
+            // Option 3: Try online translation service
+            var availableInTranslate = false;
+            if (_options.AutoTranslate)
+            {
+                availableInTranslate = _translator.TryTranslate(_transCulture, CultureInfo.CurrentCulture.Name, name, out value);
+                if (availableInTranslate)
                 {
-
-                    if (_defaultCulture != culture)
-                    {
-                        // Option 3: Online translate
-                        availableInTranslate = _translator.TryTranslate(_defaultCulture, CultureInfo.CurrentCulture.Name, name, out value);
-                    }
-                }
-
-                if (!availableInDb && _options.AutoAddKeys && _defaultCulture != culture)
-                {
-                    var res = new TResource
-                    {
-                        Key = name,
-                        Value = value ?? name,
-                        Comment = "Created by XLocalizer",
-                        CultureID = CultureInfo.CurrentCulture.Name,
-                        IsActive = false
-                    };
-
-                    // Save value to XML resource regardless the value has been translated or not
-                    // If the value is not translated, the default "name" will be assigned to the "value"
-                    // Anyhow, the saved values needs to be checked and confirmed one by one
-                    bool savedToResource = _provider.TrySetValue<TResource>(res);
-                    _logger.LogInformation($"Save resource to db, status: '{savedToResource}', key: '{name}', value: '{value ?? name}'");
-                }
-
-                if (availableInDb || availableInTranslate)
-                {
-                    // Save to cache
-                    _cache.Set(name, value);
-
-                    // Set availability to true
-                    availableInCache = true;
+                    // Add to cache
+                    _cache.Set<TResource>(name, value);
                 }
             }
 
-            var val = string.Format(value ?? name, arguments);
+            // Save to db source when AutoAdd is anebled and
+            // translation success or AutoTranslate is off
+            if (_options.AutoAddKeys && (availableInTranslate || !_options.AutoTranslate))
+            {
+                var res = new TResource
+                {
+                    Key = name,
+                    Value = value ?? name,
+                    Comment = "Created by XLocalizer",
+                    CultureID = CultureInfo.CurrentCulture.Name,
+                    IsActive = false
+                };
 
-            return new LocalizedString(name, val, resourceNotFound: !availableInCache, searchedLocation: typeof(TResource).FullName);
+                bool savedToResource = _provider.TrySetValue<TResource>(res);
+                _logger.LogInformation($"Save resource to db, status: '{savedToResource}', key: '{name}', value: '{value ?? name}'");
+            }
+
+            return new LocalizedString(name, string.Format(value ?? name, arguments), !availableInTranslate, typeof(TResource).FullName);
         }
     }
 }

@@ -27,7 +27,7 @@ namespace XLocalizer.DB
         /// <typeparam name="TContext">Application db context</typeparam>
         /// <param name="builder">builder</param>
         /// <returns></returns>
-        public static IMvcBuilder AddXDbLocalizerDb<TContext>(this IMvcBuilder builder)
+        public static IMvcBuilder AddXDbLocalizer<TContext>(this IMvcBuilder builder)
             where TContext : DbContext
         {
             var ops = new XLocalizerOptions();
