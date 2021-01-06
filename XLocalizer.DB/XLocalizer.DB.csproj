@@ -14,10 +14,13 @@
 		<PackageProjectUrl>http://docs.ziyad.info/XLocalizer</PackageProjectUrl>
 		<PackageTags>asp.net, core, razor, mvc, localization, globalization, client side, validation,scripts</PackageTags>
 		<PackageReleaseNotes>
+      - Fix #3
+      - Improved performance
+      - Improved caching
 			Release notes: https://github.com/LazZiya/XLocalizer.DB/releases
 		</PackageReleaseNotes>
 		<VersionPrefix>1.0.1</VersionPrefix>
-		<VersionSuffix>A0</VersionSuffix>
+		<VersionSuffix></VersionSuffix>
 		<AssemblyVersion>1.0.1.0</AssemblyVersion>
 		<FileVersion>1.0.1.0</FileVersion>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -40,7 +43,7 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(UseReference)' == 'Nugets'">
-		<PackageReference Include="XLocalizer" Version="1.0.1" Exclude="Build,Analyzers" />
+		<PackageReference Include="XLocalizer" Version="1.0.2" Exclude="Build,Analyzers" />
 		<PackageReference Include="XLocalizer.Translate" Version="1.0.0" Exclude="Build,Analyzers" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.0" Exclude="Build,Analyzers" />
 	</ItemGroup>
