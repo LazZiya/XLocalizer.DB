@@ -86,9 +86,15 @@ namespace XLocalizer.DB
 
         private LocalizedString GetLocalizedString(string name, params object[] arguments)
         {
-            // Option 0: If current culture is same as translation culture just return the key back
-            if (_transCulture.Equals(CultureInfo.CurrentCulture.Name, StringComparison.OrdinalIgnoreCase))
+            var _targetCulture = CultureInfo.CurrentCulture.Name;
+            var _targetEqualSource = _transCulture.Equals(_targetCulture, StringComparison.OrdinalIgnoreCase);
+
+            // Option 0: Skip localization if:
+            // LocalizeDefaultCulture == false and currentCulture == _transCulture
+            if (!_options.LocalizeDefaultCulture && _targetEqualSource)
+            {
                 return new LocalizedString(name, name, resourceNotFound: true, searchedLocation: string.Empty);
+            }
 
             // Option 1: Look in the cache
             bool availableInCache = _cache.TryGetValue<TResource>(name, out string value);
@@ -108,8 +114,10 @@ namespace XLocalizer.DB
             }
 
             // Option 3: Try online translation service
+            //           and don't do online translation if target == source culture,
+            //           because online tranlsation services requires two different cultures.
             var availableInTranslate = false;
-            if (_options.AutoTranslate)
+            if (_options.AutoTranslate && !_targetEqualSource)
             {
                 availableInTranslate = _translator.TryTranslate(_transCulture, CultureInfo.CurrentCulture.Name, name, out value);
                 if (availableInTranslate)
@@ -119,9 +127,10 @@ namespace XLocalizer.DB
                 }
             }
 
-            // Save to db source when AutoAdd is anebled and
-            // translation success or AutoTranslate is off
-            if (_options.AutoAddKeys && (availableInTranslate || !_options.AutoTranslate))
+            // Save to db when AutoAdd is anebled and:
+            // A:translation success or, B: AutoTranslate is off or, C: Target and source cultures are same
+            // option C: useful when we use code keys to localize defatul culture as well
+            if (_options.AutoAddKeys && (availableInTranslate || !_options.AutoTranslate || _targetEqualSource))
             {
                 var res = new TResource
                 {
