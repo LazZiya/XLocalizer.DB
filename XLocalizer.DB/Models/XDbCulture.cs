@@ -34,6 +34,6 @@ namespace XLocalizer.DB.Models
         /// <summary>
         /// Collection of localized values
         /// </summary>
-        public ICollection<IXDbResource> Translations { get; set; }
+        public virtual ICollection<IXDbResource> Translations { get; set; }
     }
 }
