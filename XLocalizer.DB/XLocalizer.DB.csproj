@@ -11,17 +11,16 @@
 			Database provider for XLocalizer.
 		</Description>
 		<Copyright>Ziyad.info</Copyright>
-		<PackageProjectUrl>http://docs.ziyad.info/XLocalizer</PackageProjectUrl>
+		<PackageProjectUrl>https://docs.ziyad.info/en/XLocalizer</PackageProjectUrl>
 		<PackageTags>asp.net, core, razor, mvc, localization, globalization, client side, validation,scripts</PackageTags>
 		<PackageReleaseNotes>
-			- New option LocalizeDefaultCulture, for more details see: https://github.com/LazZiya/XLocalizer/issues/19#issuecomment-820531828
-			Release notes: https://github.com/LazZiya/XLocalizer.DB/releases
+			- Fix: EFCore UseLazyLoadingProxies prevents usage of DB store #7 https://github.com/LazZiya/XLocalizer.DB/issues/7
 			Docs: https://docs.ziyad.info
 		</PackageReleaseNotes>
-		<VersionPrefix>1.0.2</VersionPrefix>
+		<VersionPrefix>1.0.3</VersionPrefix>
 		<VersionSuffix></VersionSuffix>
-		<AssemblyVersion>1.0.2.0</AssemblyVersion>
-		<FileVersion>1.0.2.0</FileVersion>
+		<AssemblyVersion>1.0.3.0</AssemblyVersion>
+		<FileVersion>1.0.3.0</FileVersion>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageIconUrl>https://github.com/LazZiya/XLocalizer.DB/raw/master/XLocalizer.DB/files/icon.png</PackageIconUrl>

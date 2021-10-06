@@ -35,7 +35,7 @@ namespace XLocalizer.DB.Models
         /// <summary>
         /// Cultre
         /// </summary>
-        public XDbCulture Culture { get; set; }
+        public virtual XDbCulture Culture { get; set; }
 
         /// <summary>
         /// Enable, disable
