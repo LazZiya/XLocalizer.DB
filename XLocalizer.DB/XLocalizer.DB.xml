@@ -193,9 +193,26 @@
             <param name="builder">builder</param>
             <returns></returns>
         </member>
+        <member name="M:XLocalizer.DB.DependencyInjection.AddXDbLocalizerFactory``1(Microsoft.Extensions.DependencyInjection.IMvcBuilder)">
+            <summary>
+            Add XLocalizer with database support using the built-in entity models and DbContextFactory pattern
+            </summary>
+            <typeparam name="TContext">Application db context</typeparam>
+            <param name="builder">builder</param>
+            <returns></returns>
+        </member>
         <member name="M:XLocalizer.DB.DependencyInjection.AddXDbLocalizer``1(Microsoft.Extensions.DependencyInjection.IMvcBuilder,System.Action{XLocalizer.XLocalizerOptions})">
             <summary>
             Add XLocalizer support using the built-in entity models
+            </summary>
+            <typeparam name="TContext">Application db context</typeparam>
+            <param name="builder"></param>
+            <param name="options"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XLocalizer.DB.DependencyInjection.AddXDbLocalizerFactory``1(Microsoft.Extensions.DependencyInjection.IMvcBuilder,System.Action{XLocalizer.XLocalizerOptions})">
+            <summary>
+            Add XLocalizer support using the built-in entity models and DbContextFactory pattern
             </summary>
             <typeparam name="TContext">Application db context</typeparam>
             <param name="builder"></param>
@@ -212,6 +229,16 @@
             <param name="builder">builder</param>
             <returns></returns>
         </member>
+        <member name="M:XLocalizer.DB.DependencyInjection.AddXDbLocalizerFactory``2(Microsoft.Extensions.DependencyInjection.IMvcBuilder)">
+            <summary>
+            Add XLocalizer with database support using the built-in entity models and DbContextFactory pattern,
+            and use defined translation service type
+            </summary>
+            <typeparam name="TContext">Application db context</typeparam>
+            <typeparam name="TTranslator">Translation service</typeparam>
+            <param name="builder">builder</param>
+            <returns></returns>
+        </member>
         <member name="M:XLocalizer.DB.DependencyInjection.AddXDbLocalizer``2(Microsoft.Extensions.DependencyInjection.IMvcBuilder,System.Action{XLocalizer.XLocalizerOptions})">
             <summary>
             Add XLocalizer with database support using the built-in entity models,
@@ -221,6 +248,16 @@
             <typeparam name="TTranslator">Translation service</typeparam>
             <param name="builder">builder</param>
             <param name="options">builder</param>
+            <returns></returns>
+        </member>
+        <member name="M:XLocalizer.DB.DependencyInjection.AddXDbLocalizerFactory``2(Microsoft.Extensions.DependencyInjection.IMvcBuilder,System.Action{XLocalizer.XLocalizerOptions})">
+            <summary>
+            Add XLocalizer with DB support using customized entity models and DbContextFactory pattern.
+            </summary>
+            <typeparam name="TContext"></typeparam>
+            <typeparam name="TTranslator"></typeparam>
+            <param name="builder"></param>
+            <param name="options"></param>
             <returns></returns>
         </member>
         <member name="M:XLocalizer.DB.DependencyInjection.AddXDbLocalizer``3(Microsoft.Extensions.DependencyInjection.IMvcBuilder)">
@@ -244,6 +281,18 @@
             <typeparam name="TResource">Type of localization DbEntity</typeparam>
             <param name="options">XLDbOptions</param>
             <param name="builder"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XLocalizer.DB.DependencyInjection.AddXDbLocalizerFactory``3(Microsoft.Extensions.DependencyInjection.IMvcBuilder,System.Action{XLocalizer.XLocalizerOptions})">
+            <summary>
+            Add XLocalizer with DB support using customized entity models and DbContextFactory pattern,
+            and use defined translation service type
+            </summary>
+            <typeparam name="TContext"></typeparam>
+            <typeparam name="TTranslator"></typeparam>
+            <typeparam name="TResource"></typeparam>
+            <param name="builder"></param>
+            <param name="options"></param>
             <returns></returns>
         </member>
         <member name="T:XLocalizer.DB.EF.DependencyInjection">
@@ -316,6 +365,63 @@
             <param name="name"></param>
             <returns></returns>
         </member>
+        <member name="T:XLocalizer.DB.EF.EFCultureManagerFactory`1">
+            <summary>
+            Manage localizaton cultures
+            </summary>
+            <typeparam name="TContext"></typeparam>
+        </member>
+        <member name="M:XLocalizer.DB.EF.EFCultureManagerFactory`1.#ctor(Microsoft.EntityFrameworkCore.IDbContextFactory{`0},Microsoft.Extensions.Logging.ILogger{XLocalizer.DB.EF.EFCultureManagerFactory{`0}})">
+            <summary>
+            Initialize a new instance of <see cref="T:XLocalizer.DB.EF.EFCultureManagerFactory`1"/>
+            </summary>
+            <param name="dbContextFactory"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="M:XLocalizer.DB.EF.EFCultureManagerFactory`1.AddCultureAsync(XLocalizer.DB.Models.XDbCulture)">
+            <summary>
+            Add new culture
+            </summary>
+            <param name="culture"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XLocalizer.DB.EF.EFCultureManagerFactory`1.DeleteCultureAsync(System.String)">
+            <summary>
+            Delete culture and relevant records!
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XLocalizer.DB.EF.EFCultureManagerFactory`1.CulturesListAsync(System.Int32,System.Int32,System.Collections.Generic.List{System.Linq.Expressions.Expression{System.Func{XLocalizer.DB.Models.XDbCulture,System.Boolean}}})">
+            <summary>
+            Get specified count of <see cref="T:XLocalizer.DB.Models.XDbResource"/> as <see cref="T:XLocalizer.DB.Models.XDbResourceListItem"/>
+            </summary>
+            <param name="start"></param>
+            <param name="size"></param>
+            <param name="searchExp"></param>
+            <returns>object of two parts, first one is a list of items, second one is the total recods</returns>
+        </member>
+        <member name="M:XLocalizer.DB.EF.EFCultureManagerFactory`1.GetCultureAsync(System.String)">
+            <summary>
+            Get a culture
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XLocalizer.DB.EF.EFCultureManagerFactory`1.UpdateCultureAsync(XLocalizer.DB.Models.XDbCulture)">
+            <summary>
+            Update a resource
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XLocalizer.DB.EF.EFCultureManagerFactory`1.SetAsDefaultAsync(System.String)">
+            <summary>
+            Set a culture as default
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
         <member name="T:XLocalizer.DB.EF.EFDbResourceExporter`1">
             <summary>
             EF Resource exporter
@@ -352,6 +458,42 @@
             <param name="s"></param>
             <returns></returns>
         </member>
+        <member name="T:XLocalizer.DB.EF.EFDbResourceExporterFactory`1">
+            <summary>
+            EF Resource exporter
+            </summary>
+            <typeparam name="TContext"></typeparam>
+        </member>
+        <member name="M:XLocalizer.DB.EF.EFDbResourceExporterFactory`1.#ctor(Microsoft.EntityFrameworkCore.IDbContextFactory{`0},Microsoft.Extensions.Options.IOptions{XLocalizer.XLocalizerOptions},Microsoft.Extensions.Logging.ILoggerFactory)">
+            <summary>
+            Initialize a new instance of <see cref="T:XLocalizer.DB.EF.EFDbResourceExporterFactory`1"/>
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="loggerFactory"></param>
+        </member>
+        <member name="M:XLocalizer.DB.EF.EFDbResourceExporterFactory`1.ExportToResx``1(System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Export resources of specified type and culture to resx
+            </summary>
+            <typeparam name="TResource"></typeparam>
+            <param name="culture"></param>
+            <param name="approvedOnly"></param>
+            <param name="overwriteExistingResources"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XLocalizer.DB.EF.EFDbResourceExporterFactory`1.ExportToResx``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            Export resources of specified type and culture to resx
+            </summary>
+            <typeparam name="TResource"></typeparam>
+            <param name="expression"></param>
+            <param name="culture"></param>
+            <param name="overwrite"></param>
+            <param name="p"></param>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
         <member name="T:XLocalizer.DB.EF.EFDbResourceProvider`1">
             <summary>
             EF Localization provider
@@ -375,6 +517,36 @@
             <returns></returns>
         </member>
         <member name="M:XLocalizer.DB.EF.EFDbResourceProvider`1.TrySetValue``1(``0)">
+            <summary>
+            Try save a localized value to db
+            </summary>
+            <typeparam name="TResource"></typeparam>
+            <param name="resource"></param>
+            <returns></returns>
+        </member>
+        <member name="T:XLocalizer.DB.EF.EFDbResourceProviderFactory`1">
+            <summary>
+            EF Localization provider
+            </summary>
+            <typeparam name="TContext"></typeparam>
+        </member>
+        <member name="M:XLocalizer.DB.EF.EFDbResourceProviderFactory`1.#ctor(Microsoft.EntityFrameworkCore.IDbContextFactory{`0},Microsoft.Extensions.Logging.ILogger{XLocalizer.DB.EF.EFDbResourceProviderFactory{`0}})">
+            <summary>
+            Initialize a new instance of <see cref="T:XLocalizer.DB.EF.EFDbResourceProviderFactory`1"/>
+            </summary>
+            <param name="dbContextFactory"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="M:XLocalizer.DB.EF.EFDbResourceProviderFactory`1.TryGetValue``1(System.String,System.String@)">
+            <summary>
+            Try get a localized value from db
+            </summary>
+            <typeparam name="TResource"></typeparam>
+            <param name="key"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XLocalizer.DB.EF.EFDbResourceProviderFactory`1.TrySetValue``1(``0)">
             <summary>
             Try save a localized value to db
             </summary>
@@ -461,6 +633,80 @@
             <returns></returns>
         </member>
         <member name="M:XLocalizer.DB.EF.EFResourceManager`1.BulkUpdateAsync``1(System.String,System.String)">
+            <summary>
+            Updates all resources with the same oldKey to the newKey for all localized cultures.
+            If the new key is existed before operation will be canceled
+            </summary>
+            <typeparam name="TResource"></typeparam>
+            <param name="oldKey"></param>
+            <param name="newKey"></param>
+            <returns></returns>
+        </member>
+        <member name="T:XLocalizer.DB.EF.EFResourceManagerFactory`1">
+            <summary>
+            Manage CRUD operations for XLocalizer database resources
+            </summary>
+            <typeparam name="TContext"></typeparam>
+        </member>
+        <member name="M:XLocalizer.DB.EF.EFResourceManagerFactory`1.#ctor(Microsoft.EntityFrameworkCore.IDbContextFactory{`0},Microsoft.Extensions.Logging.ILogger{XLocalizer.DB.EF.EFResourceManagerFactory{`0}})">
+            <summary>
+            Create a new instance of <see cref="T:XLocalizer.DB.EF.EFResourceManagerFactory`1"/> based on the generic type
+            </summary>
+            <param name="dbContextFactory"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="M:XLocalizer.DB.EF.EFResourceManagerFactory`1.TryGetValue``1(System.String,System.String@)">
+            <summary>
+            Try get a localized value from database resource
+            </summary>
+            <typeparam name="TResource"></typeparam>
+            <param name="key"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XLocalizer.DB.EF.EFResourceManagerFactory`1.AddResourceAsync``1(``0)">
+            <summary>
+            Add a new resource to the database
+            </summary>
+            <typeparam name="TResource"></typeparam>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XLocalizer.DB.EF.EFResourceManagerFactory`1.DeleteResourceAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            Delete a resource entity from database
+            </summary>
+            <typeparam name="TResource"></typeparam>
+            <param name="expression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XLocalizer.DB.EF.EFResourceManagerFactory`1.UpdateResourceAsync``1(``0)">
+            <summary>
+            Update a resource
+            </summary>
+            <typeparam name="TResource"></typeparam>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XLocalizer.DB.EF.EFResourceManagerFactory`1.ResourcesSetListAsync``1(System.Int32,System.Int32,System.Collections.Generic.List{System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}}})">
+            <summary>
+            Get specified count of resources
+            </summary>
+            <typeparam name="TResource"></typeparam>
+            <param name="start"></param>
+            <param name="size"></param>
+            <param name="searchExp"></param>
+            <returns>object of two parts, first one is a list of items, second one is the total recods</returns>
+        </member>
+        <member name="M:XLocalizer.DB.EF.EFResourceManagerFactory`1.GetResourceAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            Get a resource for editing
+            </summary>
+            <typeparam name="TResource"></typeparam>
+            <param name="expression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XLocalizer.DB.EF.EFResourceManagerFactory`1.BulkUpdateAsync``1(System.String,System.String)">
             <summary>
             Updates all resources with the same oldKey to the newKey for all localized cultures.
             If the new key is existed before operation will be canceled

@@ -22,5 +22,14 @@ namespace XLocalizer.DB.EF
 
             return builder;
         }
+        
+        public static IMvcBuilder AddDbDataManagersFactory<TContext>(this IMvcBuilder builder)
+            where TContext : DbContext
+        {
+            builder.Services.AddSingleton<IDbResourceManager, EFResourceManagerFactory<TContext>>();
+            builder.Services.AddSingleton<IDbCultureManager, EFCultureManagerFactory<TContext>>();
+
+            return builder;
+        }
     }
 }

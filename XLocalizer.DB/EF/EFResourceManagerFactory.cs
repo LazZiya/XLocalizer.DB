@@ -14,20 +14,20 @@ namespace XLocalizer.DB.EF
     /// Manage CRUD operations for XLocalizer database resources
     /// </summary>
     /// <typeparam name="TContext"></typeparam>
-    public class EFResourceManager<TContext> : IDbResourceManager
+    public class EFResourceManagerFactory<TContext> : IDbResourceManager
         where TContext : DbContext
     {
-        private readonly TContext _context;
+        private readonly IDbContextFactory<TContext> _contextFactory;
         private readonly ILogger _logger;
 
         /// <summary>
-        /// Create a new instance of <see cref="EFResourceManager{TContext}"/> based on the generic type
+        /// Create a new instance of <see cref="EFResourceManagerFactory{TContext}"/> based on the generic type
         /// </summary>
-        /// <param name="context"></param>
+        /// <param name="dbContextFactory"></param>
         /// <param name="logger"></param>
-        public EFResourceManager(TContext context, ILogger<EFResourceManager<TContext>> logger)
+        public EFResourceManagerFactory(IDbContextFactory<TContext> dbContextFactory, ILogger<EFResourceManagerFactory<TContext>> logger)
         {
-            _context = context ?? throw new NotImplementedException(nameof(context));
+            _contextFactory = dbContextFactory ?? throw new NotImplementedException(nameof(dbContextFactory));
 
             _logger = logger;
         }
@@ -44,7 +44,8 @@ namespace XLocalizer.DB.EF
         {
             var culture = CultureInfo.CurrentCulture.Name;
 
-            var v = _context.Set<TResource>()
+            using var dbContext = _contextFactory.CreateDbContext();
+            var v = dbContext.Set<TResource>()
                                   .AsNoTracking()
                                   .Where(x => x.Key == key && x.CultureID == culture)
                                   .Select(x => x.Value)
@@ -66,7 +67,8 @@ namespace XLocalizer.DB.EF
         public async Task<bool> AddResourceAsync<TResource>(TResource entity)
             where TResource : class, IXDbResource
         {
-            var existed = await _context.Set<TResource>().AsNoTracking().SingleOrDefaultAsync(x => x.Key == entity.Key && x.CultureID == entity.CultureID);
+            using var dbContext = _contextFactory.CreateDbContext();
+            var existed = await dbContext.Set<TResource>().AsNoTracking().SingleOrDefaultAsync(x => x.Key == entity.Key && x.CultureID == entity.CultureID);
 
             bool success = false;
 
@@ -77,11 +79,11 @@ namespace XLocalizer.DB.EF
             {
                 // var entity = DynamicObjectCreator.DbResource<TResource>(key, value);
 
-                _context.Set<TResource>().Add(entity);
+                dbContext.Set<TResource>().Add(entity);
 
                 try
                 {
-                    success = await _context.SaveChangesAsync() > 0;
+                    success = await dbContext.SaveChangesAsync() > 0;
 
                     if (success)
                         _logger.LogInformation($"New resource added. Culture: '{entity.CultureID}', Key: '{entity.Key}'");
@@ -105,15 +107,16 @@ namespace XLocalizer.DB.EF
         public async Task<bool> DeleteResourceAsync<TResource>(Expression<Func<TResource, bool>> expression)
             where TResource : class, IXDbResource
         {
-            var entity = await _context.Set<TResource>()
+            using var dbContext = _contextFactory.CreateDbContext();
+            var entity = await dbContext.Set<TResource>()
                                  .SingleOrDefaultAsync(expression);
 
             if (entity != null)
             {
-                _context.Entry(entity).State = EntityState.Deleted;
+                dbContext.Entry(entity).State = EntityState.Deleted;
             }
 
-            return await _context.SaveChangesAsync() > 0;
+            return await dbContext.SaveChangesAsync() > 0;
         }
 
         /// <summary>
@@ -125,16 +128,17 @@ namespace XLocalizer.DB.EF
         public async Task<bool> UpdateResourceAsync<TResource>(TResource entity)
             where TResource : class, IXDbResource
         {
+            using var dbContext = _contextFactory.CreateDbContext();
             // check if entity is being tracked
-            var local = _context.Set<TResource>().Local.SingleOrDefault(x => x.ID.Equals(entity.ID));
+            var local = dbContext.Set<TResource>().Local.SingleOrDefault(x => x.ID.Equals(entity.ID));
 
             // if entity is tracked detach it from context
             if (local != null)
-                _context.Entry<TResource>(local).State = EntityState.Detached;
+                dbContext.Entry<TResource>(local).State = EntityState.Detached;
 
-            _context.Attach(entity).State = EntityState.Modified;
+            dbContext.Attach(entity).State = EntityState.Modified;
 
-            return await _context.SaveChangesAsync() > 0;
+            return await dbContext.SaveChangesAsync() > 0;
         }
 
         /// <summary>
@@ -148,7 +152,8 @@ namespace XLocalizer.DB.EF
         public async Task<(IEnumerable<TResource> list, int total)> ResourcesSetListAsync<TResource>(int start, int size, List<Expression<Func<TResource, bool>>> searchExp)
             where TResource : class, IXDbResource
         {
-            var query = _context.Set<TResource>()
+            using var dbContext = _contextFactory.CreateDbContext();
+            var query = dbContext.Set<TResource>()
                                 .AsNoTracking()
                                 .WhereList(searchExp);
 
@@ -171,7 +176,8 @@ namespace XLocalizer.DB.EF
         public async Task<TResource> GetResourceAsync<TResource>(Expression<Func<TResource, bool>> expression)
             where TResource : class, IXDbResource
         {
-            return await _context.Set<TResource>()
+            using var dbContext = _contextFactory.CreateDbContext();
+            return await dbContext.Set<TResource>()
                                  .AsNoTracking()
                                  .FirstOrDefaultAsync(expression);
         }
@@ -187,7 +193,8 @@ namespace XLocalizer.DB.EF
         public async Task<int> BulkUpdateAsync<TResource>(string oldKey, string newKey)
             where TResource : class, IXDbResource
         {
-            var oldResources = _context.Set<TResource>()
+            using var dbContext = _contextFactory.CreateDbContext();
+            var oldResources = dbContext.Set<TResource>()
                                              .Where(x => x.Key == oldKey)
                                              .AsEnumerable();
 
@@ -196,7 +203,7 @@ namespace XLocalizer.DB.EF
                 r.Key = newKey;
             }
 
-            return await _context.SaveChangesAsync();
+            return await dbContext.SaveChangesAsync();
         }
     }
 }
